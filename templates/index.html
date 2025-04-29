@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANPR System | Futuristic Edition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="bg-elements">
+        <div class="bg-element"></div>
+        <div class="bg-element"></div>
+        <div class="bg-element"></div>
+    </div>
+    
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-car-alt"></i>
+                    <span>ANPR<sup>PRO</sup></span>
+                </div>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <ul class="nav-links">
+                <li class="active">
+                    <a href="#">
+                        <i class="fas fa-video"></i>
+                        <span>Live Monitor</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="manualEntryLink">
+                        <i class="fas fa-keyboard"></i>
+                        <span>Manual Entry</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-database"></i>
+                        <span>Plate Database</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <span class="status-indicator active"></span>
+                    <span>System Active</span>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content">
+            <header class="top-bar">
+                <h1>Automatic Number Plate Recognition</h1>
+                <div class="user-actions">
+                    <button class="btn btn-scan" id="scanToggleBtn">
+                        <i class="fas fa-play"></i>
+                        <span>Start Scanning</span>
+                    </button>
+                    <button class="btn btn-primary" id="manualEntryBtn">
+                        <i class="fas fa-keyboard"></i>
+                        <span>Manual Entry</span>
+                    </button>
+                </div>
+            </header>
+            
+            <div class="dashboard">
+                <div class="main-section">
+                    <div class="video-container">
+                        <div class="video-feed">
+                            <img src="{{ url_for('video') }}" width="720" />
+                            <div class="camera-overlay">
+                                <div class="camera-info">
+                                    <i class="fas fa-video"></i>
+                                    <span id="cameraStatus">LIVE</span>
+                                </div>
+                                <div class="camera-controls">
+                                    <button class="btn-icon" title="Capture Screenshot" id="captureBtn">
+                                        <i class="fas fa-camera"></i>
+                                    </button>
+                                    <button class="btn-icon" title="Toggle Fullscreen" id="fullscreenBtn">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="scan-overlay" id="scanOverlay">
+                                <div class="scan-line"></div>
+                                <div class="scan-grid"></div>
+                                <div class="corner-markers">
+                                    <div class="corner top-left"></div>
+                                    <div class="corner top-right"></div>
+                                    <div class="corner bottom-left"></div>
+                                    <div class="corner bottom-right"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detection-overlay" id="detectionOverlay">
+                            <div class="plate-info">
+                                <div class="plate-number-container">
+                                    <h2 id="plateNumber">Waiting for vehicle...</h2>
+                                    <span class="confidence-indicator" id="confidenceIndicator"></span>
+                                </div>
+                                <div class="auth-status" id="authStatus">
+                                    <span class="status-badge" id="statusBadge">-</span>
+                                </div>
+                            </div>
+                            <div class="vehicle-description" id="vehicleDescription"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-overview">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Total Scanned</h3>
+                                <p id="totalDetections">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card authorized">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Authorized</h3>
+                                <p id="authorizedCount">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card unauthorized">
+                            <div class="stat-icon">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Unauthorized</h3>
+                                <p id="unauthorizedCount">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="side-panel">
+                    <div class="panel-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-history"></i> Recent Detections</h3>
+                            <button class="btn-text" id="clearHistory">Clear</button>
+                        </div>
+                        <div class="history-list" id="historyList">
+                            <!-- Detection history will be populated here -->
+                            <div class="empty-state">
+                                <i class="fas fa-car-side"></i>
+                                <p>No detections yet</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-list-check"></i> Authorized Plates</h3>
+                            <span class="badge" id="plateCount">0</span>
+                        </div>
+                        <div class="authorized-list" id="authorizedList">
+                            <!-- Authorized plates will be populated here -->
+                            <div class="empty-state">
+                                <i class="fas fa-database"></i>
+                                <p>No plates in database</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Manual Entry Modal -->
+    <div class="modal" id="manualEntryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Manual License Plate Entry</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Enter a license plate number to check if it's authorized:</p>
+                <div class="form-group">
+                    <input type="text" id="manualPlateInput" placeholder="e.g., MH20EE7602" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelModal">Cancel</button>
+                <button class="btn btn-primary" id="submitManualPlate">Check Plate</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
+
