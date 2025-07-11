@@ -21,11 +21,7 @@ A complete ANPR system that runs on a Raspberry Pi with a webcam. The system det
 ### Software
 - Python 3.7+ with OpenCV and Tesseract OCR
 - Flask web server
-- HTML/CSS/JS frontend
-
-## Installation
-
-See the [Deployment Guide](DEPLOYMENT.md) for detailed installation instructions.
+- NEXTJS frontend
 
 ## Usage
 
@@ -43,4 +39,5 @@ See the [Deployment Guide](DEPLOYMENT.md) for detailed installation instructions
 ## License
 
 MIT
+
 
