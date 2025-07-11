@@ -36,8 +36,8 @@ A complete ANPR system that runs on a Raspberry Pi with a webcam. The system det
 - Adjust detection parameters in the Python code for better accuracy
 - Modify the UI by editing the HTML, CSS, and JavaScript files
 
-## License
+## Images
 
-MIT
+![Smart ANPR UI](Example-Image.jpeg)
 
 
